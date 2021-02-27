@@ -15,4 +15,4 @@ dotnet run --configuration Release
 ```
 
 ## Result
-![Benchmark](https://raw.githubusercontent.com/mjebrahimi/Benchmark.netCoreMappers/master/benchmark.png)
+![Benchmark](benchmark.png)

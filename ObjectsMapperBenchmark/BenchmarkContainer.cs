@@ -1,19 +1,25 @@
 ﻿using System.IO;
-using System.Linq;
 using AutoMapper;
 using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Configs;
+using BenchmarkDotNet.Engines;
+using BenchmarkDotNet.Order;
 using Mapster;
-using Nelibur.ObjectMapper;
-using ObjectsMapperBenchmark.Dto;
-using ObjectsMapperBenchmark.Entities;
 
 namespace ObjectsMapperBenchmark
 {
-    [InProcess]
+    //[DryJob]
+    //[ShortRunJob]
+    [SimpleJob(RunStrategy.Throughput)]
+    [MemoryDiagnoser]
+    [KeepBenchmarkFiles(false)]
+    [GroupBenchmarksBy(BenchmarkLogicalGroupRule.ByMethod)]
+    [Orderer(SummaryOrderPolicy.FastestToSlowest, MethodOrderPolicy.Declared)]
     public class BenchmarkContainer
     {
-        private readonly SpotifyAlbumDto _spotifyAlbumDto = null;
+        private readonly SpotifyAlbumDto _spotifyAlbumDto;
         private readonly IMapper _autoMapper;
+
         public BenchmarkContainer()
         {
             var json = File.ReadAllText("spotifyAlbum.json");
@@ -42,177 +48,80 @@ namespace ObjectsMapperBenchmark
             _autoMapper = mapperConfig.CreateMapper();
 
             //TinyMapper Configuration 
-            TinyMapper.Bind<SpotifyAlbumDto, SpotifyAlbum>();
-            TinyMapper.Bind<CopyrightDto, Copyright>();
-            TinyMapper.Bind<ArtistDto, Artist>();
-            TinyMapper.Bind<ExternalIdsDto, ExternalIds>();
-            TinyMapper.Bind<ExternalUrlsDto, ExternalUrls>();
-            TinyMapper.Bind<TracksDto, Tracks>();
-            TinyMapper.Bind<ImageDto, Image>();
-            TinyMapper.Bind<ItemDto, Item>();
-            TinyMapper.Bind<SpotifyAlbum, SpotifyAlbumDto>();
-            TinyMapper.Bind<Copyright, CopyrightDto>();
-            TinyMapper.Bind<Artist, ArtistDto>();
-            TinyMapper.Bind<ExternalIds, ExternalIdsDto>();
-            TinyMapper.Bind<ExternalUrls, ExternalUrlsDto>();
-            TinyMapper.Bind<Tracks, TracksDto>();
-            TinyMapper.Bind<Image, ImageDto>();
-            TinyMapper.Bind<Item, ItemDto>();
+            Nelibur.ObjectMapper.TinyMapper.Bind<SpotifyAlbumDto, SpotifyAlbum>();
+            Nelibur.ObjectMapper.TinyMapper.Bind<CopyrightDto, Copyright>();
+            Nelibur.ObjectMapper.TinyMapper.Bind<ArtistDto, Artist>();
+            Nelibur.ObjectMapper.TinyMapper.Bind<ExternalIdsDto, ExternalIds>();
+            Nelibur.ObjectMapper.TinyMapper.Bind<ExternalUrlsDto, ExternalUrls>();
+            Nelibur.ObjectMapper.TinyMapper.Bind<TracksDto, Tracks>();
+            Nelibur.ObjectMapper.TinyMapper.Bind<ImageDto, Image>();
+            Nelibur.ObjectMapper.TinyMapper.Bind<ItemDto, Item>();
+            Nelibur.ObjectMapper.TinyMapper.Bind<SpotifyAlbum, SpotifyAlbumDto>();
+            Nelibur.ObjectMapper.TinyMapper.Bind<Copyright, CopyrightDto>();
+            Nelibur.ObjectMapper.TinyMapper.Bind<Artist, ArtistDto>();
+            Nelibur.ObjectMapper.TinyMapper.Bind<ExternalIds, ExternalIdsDto>();
+            Nelibur.ObjectMapper.TinyMapper.Bind<ExternalUrls, ExternalUrlsDto>();
+            Nelibur.ObjectMapper.TinyMapper.Bind<Tracks, TracksDto>();
+            Nelibur.ObjectMapper.TinyMapper.Bind<Image, ImageDto>();
+            Nelibur.ObjectMapper.TinyMapper.Bind<Item, ItemDto>();
 
             //ExpressMapper Configuration 
-            ExpressMapper.Mapper.Register<SpotifyAlbumDto, SpotifyAlbum>();
-            ExpressMapper.Mapper.Register<CopyrightDto, Copyright>();
-            ExpressMapper.Mapper.Register<ArtistDto, Artist>();
-            ExpressMapper.Mapper.Register<ExternalIdsDto, ExternalIds>();
-            ExpressMapper.Mapper.Register<ExternalUrlsDto, ExternalUrls>();
-            ExpressMapper.Mapper.Register<TracksDto, Tracks>();
-            ExpressMapper.Mapper.Register<ImageDto, Image>();
-            ExpressMapper.Mapper.Register<ItemDto, Item>();
-            ExpressMapper.Mapper.Register<SpotifyAlbum, SpotifyAlbumDto>();
-            ExpressMapper.Mapper.Register<Copyright, CopyrightDto>();
-            ExpressMapper.Mapper.Register<Artist, ArtistDto>();
-            ExpressMapper.Mapper.Register<ExternalIds, ExternalIdsDto>();
-            ExpressMapper.Mapper.Register<ExternalUrls, ExternalUrlsDto>();
-            ExpressMapper.Mapper.Register<Tracks, TracksDto>();
-            ExpressMapper.Mapper.Register<Image, ImageDto>();
-            ExpressMapper.Mapper.Register<Item, ItemDto>();
+            global::ExpressMapper.Mapper.Register<SpotifyAlbumDto, SpotifyAlbum>();
+            global::ExpressMapper.Mapper.Register<CopyrightDto, Copyright>();
+            global::ExpressMapper.Mapper.Register<ArtistDto, Artist>();
+            global::ExpressMapper.Mapper.Register<ExternalIdsDto, ExternalIds>();
+            global::ExpressMapper.Mapper.Register<ExternalUrlsDto, ExternalUrls>();
+            global::ExpressMapper.Mapper.Register<TracksDto, Tracks>();
+            global::ExpressMapper.Mapper.Register<ImageDto, Image>();
+            global::ExpressMapper.Mapper.Register<ItemDto, Item>();
+            global::ExpressMapper.Mapper.Register<SpotifyAlbum, SpotifyAlbumDto>();
+            global::ExpressMapper.Mapper.Register<Copyright, CopyrightDto>();
+            global::ExpressMapper.Mapper.Register<Artist, ArtistDto>();
+            global::ExpressMapper.Mapper.Register<ExternalIds, ExternalIdsDto>();
+            global::ExpressMapper.Mapper.Register<ExternalUrls, ExternalUrlsDto>();
+            global::ExpressMapper.Mapper.Register<Tracks, TracksDto>();
+            global::ExpressMapper.Mapper.Register<Image, ImageDto>();
+            global::ExpressMapper.Mapper.Register<Item, ItemDto>();
 
             //Mapster don't need configuration
             //AgileMapper don't need configuration
         }
 
         [Benchmark]
-        public SpotifyAlbum MapWithAgileMapper()
+        public void AgileMapper()
         {
-            var spotifyalbum = AgileObjects.AgileMapper.Mapper.Map(_spotifyAlbumDto).ToANew<SpotifyAlbum>();
-            return spotifyalbum;
+            AgileObjects.AgileMapper.Mapper.Map(_spotifyAlbumDto).ToANew<SpotifyAlbum>();
         }
 
         [Benchmark]
-        public SpotifyAlbum MapWithTinyMapper()
+        public void TinyMapper()
         {
-            var spotifyAlbum = TinyMapper.Map<SpotifyAlbum>(_spotifyAlbumDto);
-            return spotifyAlbum;
+            Nelibur.ObjectMapper.TinyMapper.Map<SpotifyAlbum>(_spotifyAlbumDto);
         }
 
         [Benchmark]
-        public SpotifyAlbum MapWithExpressMapper()
+        public void ExpressMapper()
         {
-            var spotifyalbum = ExpressMapper.Mapper.Map<SpotifyAlbumDto, SpotifyAlbum>(_spotifyAlbumDto);
-            return spotifyalbum;
+            global::ExpressMapper.Mapper.Map<SpotifyAlbumDto, SpotifyAlbum>(_spotifyAlbumDto);
         }
 
         [Benchmark]
-        public SpotifyAlbum MapWithAutoMapper()
+        public void AutoMapper()
         {
-            var spotifyalbum = _autoMapper.Map<SpotifyAlbum>(_spotifyAlbumDto);
-            return spotifyalbum;
+            _autoMapper.Map<SpotifyAlbum>(_spotifyAlbumDto);
         }
 
         [Benchmark]
-        public SpotifyAlbum MapWithManualMapping()
+        public void ManualMapping()
         {
             //Generated by MappingGenerator
-            var spotifyalbum = _spotifyAlbumDto.Map();
-            return spotifyalbum;
+            _spotifyAlbumDto.Map();
         }
 
         [Benchmark]
-        public SpotifyAlbum MapWithMapster()
+        public void Mapster()
         {
-            var spotifyalbum = _spotifyAlbumDto.Adapt<SpotifyAlbum>();
-            return spotifyalbum;
-        }
-    }
-
-    public static class Mapper
-    {
-        public static SpotifyAlbum Map(this SpotifyAlbumDto spotifyAlbumDto)
-        {
-            return new SpotifyAlbum()
-            {
-                AlbumType = spotifyAlbumDto.AlbumType,
-                Artists = spotifyAlbumDto.Artists.Select(spotifyAlbumDtoArtist => new Artist()
-                {
-                    ExternalUrls = new ExternalUrls()
-                    {
-                        Spotify = spotifyAlbumDtoArtist.ExternalUrls.Spotify
-                    },
-                    Href = spotifyAlbumDtoArtist.Href,
-                    Id = spotifyAlbumDtoArtist.Id,
-                    Name = spotifyAlbumDtoArtist.Name,
-                    Type = spotifyAlbumDtoArtist.Type,
-                    Uri = spotifyAlbumDtoArtist.Uri
-                }).ToArray(),
-                AvailableMarkets = spotifyAlbumDto.AvailableMarkets,
-                Copyrights = spotifyAlbumDto.Copyrights.Select(spotifyAlbumDtoCopyright => new Copyright()
-                {
-                    Text = spotifyAlbumDtoCopyright.Text,
-                    Type = spotifyAlbumDtoCopyright.Type
-                }).ToArray(),
-                ExternalIds = new ExternalIds()
-                {
-                    Upc = spotifyAlbumDto.ExternalIds.Upc
-                },
-                ExternalUrls = new ExternalUrls()
-                {
-                    Spotify = spotifyAlbumDto.ExternalUrls.Spotify
-                },
-                Genres = spotifyAlbumDto.Genres,
-                Href = spotifyAlbumDto.Href,
-                Id = spotifyAlbumDto.Id,
-                Images = spotifyAlbumDto.Images.Select(spotifyAlbumDtoImage => new Image()
-                {
-                    Height = spotifyAlbumDtoImage.Height,
-                    Url = spotifyAlbumDtoImage.Url,
-                    Width = spotifyAlbumDtoImage.Width
-                }).ToArray(),
-                Name = spotifyAlbumDto.Name,
-                Popularity = spotifyAlbumDto.Popularity,
-                ReleaseDate = spotifyAlbumDto.ReleaseDate,
-                ReleaseDatePrecision = spotifyAlbumDto.ReleaseDatePrecision,
-                Tracks = new Tracks()
-                {
-                    Href = spotifyAlbumDto.Tracks.Href,
-                    Items = spotifyAlbumDto.Tracks.Items.Select(spotifyAlbumDtoTracksItem => new Item()
-                    {
-                        Artists = spotifyAlbumDtoTracksItem.Artists.Select(spotifyAlbumDtoTracksItemArtist => new Artist()
-                        {
-                            ExternalUrls = new ExternalUrls()
-                            {
-                                Spotify = spotifyAlbumDtoTracksItemArtist.ExternalUrls.Spotify
-                            },
-                            Href = spotifyAlbumDtoTracksItemArtist.Href,
-                            Id = spotifyAlbumDtoTracksItemArtist.Id,
-                            Name = spotifyAlbumDtoTracksItemArtist.Name,
-                            Type = spotifyAlbumDtoTracksItemArtist.Type,
-                            Uri = spotifyAlbumDtoTracksItemArtist.Uri
-                        }).ToArray(),
-                        AvailableMarkets = spotifyAlbumDtoTracksItem.AvailableMarkets,
-                        DiscNumber = spotifyAlbumDtoTracksItem.DiscNumber,
-                        DurationMs = spotifyAlbumDtoTracksItem.DurationMs,
-                        Explicit = spotifyAlbumDtoTracksItem.Explicit,
-                        ExternalUrls = new ExternalUrls()
-                        {
-                            Spotify = spotifyAlbumDtoTracksItem.ExternalUrls.Spotify
-                        },
-                        Href = spotifyAlbumDtoTracksItem.Href,
-                        Id = spotifyAlbumDtoTracksItem.Id,
-                        Name = spotifyAlbumDtoTracksItem.Name,
-                        PreviewUrl = spotifyAlbumDtoTracksItem.PreviewUrl,
-                        TrackNumber = spotifyAlbumDtoTracksItem.TrackNumber,
-                        Type = spotifyAlbumDtoTracksItem.Type,
-                        Uri = spotifyAlbumDtoTracksItem.Uri
-                    }).ToArray(),
-                    Limit = spotifyAlbumDto.Tracks.Limit,
-                    Next = spotifyAlbumDto.Tracks.Next,
-                    Offset = spotifyAlbumDto.Tracks.Offset,
-                    Previous = spotifyAlbumDto.Tracks.Previous,
-                    Total = spotifyAlbumDto.Tracks.Total
-                },
-                Type = spotifyAlbumDto.Type,
-                Uri = spotifyAlbumDto.Uri
-            };
+            _spotifyAlbumDto.Adapt<SpotifyAlbum>();
         }
     }
 }

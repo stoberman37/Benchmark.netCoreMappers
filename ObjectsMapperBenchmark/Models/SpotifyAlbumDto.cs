@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 
 
-namespace ObjectsMapperBenchmark.Dto
+namespace ObjectsMapperBenchmark
 {
     public partial class SpotifyAlbumDto
     {

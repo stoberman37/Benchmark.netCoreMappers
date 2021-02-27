@@ -7,7 +7,12 @@ namespace ObjectsMapperBenchmark
     {
         static void Main(string[] args)
         {
-            var res = BenchmarkRunner.Run<BenchmarkContainer>();
+#if DEBUG
+            System.Console.ForegroundColor = System.ConsoleColor.Yellow;
+            System.Console.WriteLine("*****To achieve accurate results, set project configuration to Release mode.*****");
+            return;
+#endif
+            BenchmarkRunner.Run<BenchmarkContainer>();
             Console.ReadLine();
         }
     }

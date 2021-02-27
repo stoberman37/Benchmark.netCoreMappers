@@ -1,4 +1,4 @@
-﻿namespace ObjectsMapperBenchmark.Entities
+﻿namespace ObjectsMapperBenchmark
 {
     public class SpotifyAlbum
     {
