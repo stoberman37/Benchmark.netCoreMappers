@@ -19,6 +19,7 @@ namespace ObjectsMapperBenchmark
     {
         private readonly SpotifyAlbumDto _spotifyAlbumDto;
         private readonly IMapper _autoMapper;
+        private readonly MapperlyMapper _mapperlyMapper;
 
         public BenchmarkContainer()
         {
@@ -82,6 +83,9 @@ namespace ObjectsMapperBenchmark
             global::ExpressMapper.Mapper.Register<Tracks, TracksDto>();
             global::ExpressMapper.Mapper.Register<Image, ImageDto>();
             global::ExpressMapper.Mapper.Register<Item, ItemDto>();
+            
+            // Mapperly
+            _mapperlyMapper = new MapperlyMapper();
 
             //Mapster don't need configuration
             //AgileMapper don't need configuration
@@ -122,6 +126,12 @@ namespace ObjectsMapperBenchmark
         public void Mapster()
         {
             _spotifyAlbumDto.Adapt<SpotifyAlbum>();
+        }
+
+        [Benchmark]
+        public void Mapperly()
+        {
+            _mapperlyMapper.Map(_spotifyAlbumDto);
         }
     }
 }
