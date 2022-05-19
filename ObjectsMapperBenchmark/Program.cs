@@ -1,4 +1,5 @@
 ﻿using System;
+using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Running;
 
 namespace ObjectsMapperBenchmark
@@ -12,7 +13,8 @@ namespace ObjectsMapperBenchmark
             System.Console.WriteLine("*****To achieve accurate results, set project configuration to Release mode.*****");
             return;
 #endif
-            BenchmarkRunner.Run<BenchmarkContainer>();
+            var config = DefaultConfig.Instance.WithOptions(ConfigOptions.DisableOptimizationsValidator);
+            BenchmarkRunner.Run<BenchmarkContainer>(config);
             Console.ReadLine();
         }
     }
