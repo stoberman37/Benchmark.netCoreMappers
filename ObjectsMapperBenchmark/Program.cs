@@ -1,21 +1,23 @@
-﻿using System;
+﻿using BenchmarkDotNet.Columns;
 using BenchmarkDotNet.Configs;
+using BenchmarkDotNet.Exporters.Csv;
+using BenchmarkDotNet.Reports;
 using BenchmarkDotNet.Running;
 
-namespace ObjectsMapperBenchmark
-{
-    class Program
-    {
-        static void Main(string[] args)
-        {
-#if DEBUG
-            System.Console.ForegroundColor = System.ConsoleColor.Yellow;
-            System.Console.WriteLine("*****To achieve accurate results, set project configuration to Release mode.*****");
-            return;
-#endif
-            var config = DefaultConfig.Instance.WithOptions(ConfigOptions.DisableOptimizationsValidator);
-            BenchmarkRunner.Run<BenchmarkContainer>(config);
-            Console.ReadLine();
-        }
-    }
-}
+
+var exporter = new CsvExporter(
+	CsvSeparator.CurrentCulture,
+	new SummaryStyle(
+		cultureInfo: System.Globalization.CultureInfo.CurrentCulture,
+		printUnitsInHeader: true,
+		printUnitsInContent: false,
+		timeUnit: Perfolizer.Horology.TimeUnit.Microsecond,
+		sizeUnit: SizeUnit.KB
+	));
+
+//var config = ManualConfig.CreateMinimumViable().AddExporter(exporter); 
+var config = DefaultConfig.Instance.WithOptions(ConfigOptions.DisableOptimizationsValidator).AddExporter(exporter);
+
+BenchmarkSwitcher.FromAssembly(typeof(Program).Assembly).Run(args, config);
+//BenchmarkSwitcher.FromAssembly(typeof(Program).Assembly).Run(args,
+//	DefaultConfig.Instance.WithOptions(ConfigOptions.DisableOptimizationsValidator));

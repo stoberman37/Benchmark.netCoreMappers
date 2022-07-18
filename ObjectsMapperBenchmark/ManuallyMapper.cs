@@ -91,5 +91,39 @@ namespace ObjectsMapperBenchmark
                 Uri = spotifyAlbumDto.Uri
             };
         }
+
+        public static Case1.User Map(this Case1.UserModel model)
+        {
+	        return new Case1.User
+	        {
+		        Id = model.Id,
+		        BirthDate = model.BirthDate,
+		        Name = model.Name,
+		        Score = model.Score
+	        };
+        }
+
+        public static Case2.User Map(this Case2.UserModel model) => new()
+		{
+		        Address = model.Address.Map(),
+		        BirthDate = model.BirthDate,
+		        Contacts = model.Contacts.Select(c => c.Map()).ToList(),
+		        Id = model.Id,
+		        Name = model.Name,
+		        Score = model.Score
+	        };
+
+        public static Case2.Address Map(this Case2.AddressModel model) => new()
+	        {
+		        Number = model.Number,
+		        Street = model.Street,
+		        ZipCode = model.ZipCode
+	        };
+
+        public static Case2.Contact Map(this Case2.ContactModel model) => new()
+	        {
+		        ContactType = model.ContactType, 
+		        Description = model.Description
+	        };
     }
 }
