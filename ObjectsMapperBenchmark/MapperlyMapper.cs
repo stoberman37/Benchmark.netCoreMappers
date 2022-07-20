@@ -34,4 +34,43 @@ namespace ObjectsMapperBenchmark
 		}
 	}
 
+	[Mapper(UseDeepCloning = true)]
+	public partial class Case3UserModelMapper
+	{
+		public Case3.User Map(Case3.UserModel userModel)
+		{
+			return new Case3.User()
+			{
+				Address = Map(userModel.Location),
+				BirthDate = userModel.BornAt,
+				Contacts = MapList(userModel.ContactList),
+				Id = userModel.Id,
+				Name = userModel.Name,
+				Score = userModel.Points
+			};
+		}
+
+		public partial Case3.User[] MapArray(IEnumerable<Case3.UserModel> models);
+		public partial List<Case3.User> MapList(IEnumerable<Case3.UserModel> models);
+
+		public Case3.Address Map(Case3.AddressModel addressModel)
+		{
+			return new Case3.Address
+			{
+				ZipCode = addressModel.Identifier,
+				Street = addressModel.Address.Split(',')[0],
+				City = addressModel.Address.Split(',')[1]
+			};
+		}
+
+		public Case3.Contact Map(Case3.ContactModel contactModel)
+		{
+			return new Case3.Contact((Case3.ContactType)contactModel.ContactType, contactModel.Contact);
+		}
+
+		public IList<Case3.Contact> MapList(List<Case3.ContactModel> models)
+		{
+			return models.Select(m => m.Map()).ToList();
+		}
+	}
 }

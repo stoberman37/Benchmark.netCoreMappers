@@ -1,4 +1,5 @@
-﻿namespace ObjectsMapperBenchmark{
+﻿namespace ObjectsMapperBenchmark.Case3
+{
     public enum ContactType
     {
         email,

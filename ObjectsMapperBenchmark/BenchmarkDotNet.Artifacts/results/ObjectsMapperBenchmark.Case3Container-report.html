@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8' />
+<title>ObjectsMapperBenchmark.Case3Container-20220719-080431</title>
+
+<style type="text/css">
+	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
+	td, th { padding: 6px 13px; border: 1px solid #ddd; text-align: right; }
+	tr { background-color: #fff; border-top: 1px solid #ccc; }
+	tr:nth-child(even) { background: #f8f8f8; }
+</style>
+</head>
+<body>
+<pre><code>
+BenchmarkDotNet=v0.13.1, OS=Windows 10.0.22000
+Intel Core i7-8850H CPU 2.60GHz (Coffee Lake), 1 CPU, 12 logical and 6 physical cores
+.NET SDK=6.0.107
+  [Host]     : .NET 6.0.7 (6.0.722.32202), X64 RyuJIT DEBUG
+  Job-UTHKLG : .NET 6.0.7 (6.0.722.32202), X64 RyuJIT
+</code></pre>
+<pre><code>RunStrategy=Throughput  
+</code></pre>
+
+<table>
+<thead><tr><th>      Method</th><th>Count</th><th>         Mean</th><th>        Error</th><th>        StdDev</th><th>       Median</th><th>Gen 0</th><th>Gen 1</th><th>Gen 2</th><th>Allocated</th>
+</tr>
+</thead><tbody><tr><td>Mapperly_Array</td><td>1</td><td>792.6 ns</td><td>15.88 ns</td><td>28.23 ns</td><td>788.2 ns</td><td>0.5388</td><td>0.0038</td><td>-</td><td>2,536 B</td>
+</tr><tr><td>Mapperly_Array</td><td>10</td><td>7,903.0 ns</td><td>50.91 ns</td><td>39.74 ns</td><td>7,907.6 ns</td><td>5.6915</td><td>0.4120</td><td>-</td><td>26,840 B</td>
+</tr><tr><td>Mapperly_Array</td><td>100</td><td>99,281.4 ns</td><td>1,520.52 ns</td><td>1,347.90 ns</td><td>99,763.6 ns</td><td>52.6123</td><td>17.4561</td><td>-</td><td>270,560 B</td>
+</tr><tr><td>Mapperly_Array</td><td>1000</td><td>1,995,866.2 ns</td><td>15,990.45 ns</td><td>14,175.12 ns</td><td>1,993,488.1 ns</td><td>429.6875</td><td>214.8438</td><td>-</td><td>2,628,684 B</td>
+</tr><tr><td>Mapperly_Array</td><td>10000</td><td>63,790,445.2 ns</td><td>1,267,993.54 ns</td><td>2,318,597.89 ns</td><td>64,188,866.7 ns</td><td>4444.4444</td><td>1666.6667</td><td>222.2222</td><td>26,472,716 B</td>
+</tr><tr><td>Mapperly_Array</td><td>100000</td><td>534,146,540.0 ns</td><td>6,836,475.21 ns</td><td>6,394,843.15 ns</td><td>533,570,600.0 ns</td><td>43000.0000</td><td>14000.0000</td><td>-</td><td>270,751,608 B</td>
+</tr><tr><td>Mapperly_Array</td><td>1000000</td><td>12,826,866,726.7 ns</td><td>83,361,201.48 ns</td><td>77,976,119.58 ns</td><td>12,831,576,200.0 ns</td><td>431000.0000</td><td>150000.0000</td><td>2000.0000</td><td>2,695,749,392 B</td>
+</tr><tr><td>AutoMapper_Array</td><td>1</td><td>8,164.6 ns</td><td>83.03 ns</td><td>73.60 ns</td><td>8,130.3 ns</td><td>1.3885</td><td>0.0153</td><td>-</td><td>6,569 B</td>
+</tr><tr><td>AutoMapper_Array</td><td>10</td><td>58,985.1 ns</td><td>923.74 ns</td><td>818.87 ns</td><td>58,967.5 ns</td><td>10.1318</td><td>0.7935</td><td>-</td><td>47,730 B</td>
+</tr><tr><td>AutoMapper_Array</td><td>100</td><td>651,564.5 ns</td><td>12,637.10 ns</td><td>16,870.17 ns</td><td>647,284.5 ns</td><td>87.8906</td><td>29.2969</td><td>-</td><td>458,340 B</td>
+</tr><tr><td>AutoMapper_Array</td><td>1000</td><td>9,391,274.0 ns</td><td>125,634.51 ns</td><td>117,518.59 ns</td><td>9,426,753.1 ns</td><td>765.6250</td><td>359.3750</td><td>-</td><td>4,657,845 B</td>
+</tr><tr><td>AutoMapper_Array</td><td>10000</td><td>183,597,117.3 ns</td><td>966,444.67 ns</td><td>807,025.07 ns</td><td>183,509,750.0 ns</td><td>7500.0000</td><td>2750.0000</td><td>250.0000</td><td>46,352,996 B</td>
+</tr><tr><td>AutoMapper_Array</td><td>100000</td><td>1,820,354,640.0 ns</td><td>16,492,854.86 ns</td><td>15,427,426.67 ns</td><td>1,816,953,700.0 ns</td><td>74000.0000</td><td>25000.0000</td><td>-</td><td>470,485,800 B</td>
+</tr><tr><td>AutoMapper_Array</td><td>1000000</td><td>54,220,672,718.0 ns</td><td>7,154,022,237.20 ns</td><td>21,093,795,977.70 ns</td><td>65,581,398,050.0 ns</td><td>749000.0000</td><td>265000.0000</td><td>9000.0000</td><td>4,652,196,288 B</td>
+</tr><tr><td>ManualMapper_Array</td><td>1</td><td>953.0 ns</td><td>10.14 ns</td><td>8.47 ns</td><td>952.0 ns</td><td>0.6523</td><td>0.0057</td><td>-</td><td>3,072 B</td>
+</tr><tr><td>ManualMapper_Array</td><td>10</td><td>7,965.4 ns</td><td>114.20 ns</td><td>106.82 ns</td><td>7,985.0 ns</td><td>5.6458</td><td>0.4120</td><td>-</td><td>26,576 B</td>
+</tr><tr><td>ManualMapper_Array</td><td>100</td><td>96,466.9 ns</td><td>794.16 ns</td><td>620.03 ns</td><td>96,479.7 ns</td><td>53.1006</td><td>17.3340</td><td>-</td><td>269,096 B</td>
+</tr><tr><td>ManualMapper_Array</td><td>1000</td><td>2,062,037.1 ns</td><td>23,706.67 ns</td><td>21,015.35 ns</td><td>2,059,954.7 ns</td><td>433.5938</td><td>214.8438</td><td>-</td><td>2,661,020 B</td>
+</tr><tr><td>ManualMapper_Array</td><td>10000</td><td>64,955,373.3 ns</td><td>1,261,946.96 ns</td><td>1,769,073.39 ns</td><td>65,300,688.9 ns</td><td>4666.6667</td><td>1888.8889</td><td>333.3333</td><td>27,104,049 B</td>
+</tr><tr><td>ManualMapper_Array</td><td>100000</td><td>529,454,407.1 ns</td><td>7,605,129.30 ns</td><td>6,741,749.03 ns</td><td>529,073,150.0 ns</td><td>43000.0000</td><td>14000.0000</td><td>-</td><td>269,490,688 B</td>
+</tr><tr><td>ManualMapper_Array</td><td>1000000</td><td>8,883,119,064.6 ns</td><td>1,142,058,529.17 ns</td><td>3,349,459,968.25 ns</td><td>6,680,613,800.0 ns</td><td>425000.0000</td><td>146000.0000</td><td>1000.0000</td><td>2,679,452,616 B</td>
+</tr><tr><td>Mapperly_List</td><td>1</td><td>298.4 ns</td><td>4.66 ns</td><td>4.36 ns</td><td>300.1 ns</td><td>0.2074</td><td>-</td><td>-</td><td>976 B</td>
+</tr><tr><td>Mapperly_List</td><td>10</td><td>9,278.0 ns</td><td>81.18 ns</td><td>71.96 ns</td><td>9,270.0 ns</td><td>6.6223</td><td>0.5493</td><td>-</td><td>31,192 B</td>
+</tr><tr><td>Mapperly_List</td><td>100</td><td>89,163.4 ns</td><td>789.28 ns</td><td>616.22 ns</td><td>89,082.7 ns</td><td>56.1523</td><td>18.4326</td><td>-</td><td>266,392 B</td>
+</tr><tr><td>Mapperly_List</td><td>1000</td><td>1,984,420.6 ns</td><td>21,986.98 ns</td><td>19,490.89 ns</td><td>1,982,308.0 ns</td><td>429.6875</td><td>212.8906</td><td>-</td><td>2,604,034 B</td>
+</tr><tr><td>Mapperly_List</td><td>10000</td><td>66,993,087.9 ns</td><td>1,326,818.93 ns</td><td>2,104,475.43 ns</td><td>67,586,577.8 ns</td><td>4555.5556</td><td>1888.8889</td><td>333.3333</td><td>26,851,820 B</td>
+</tr><tr><td>Mapperly_List</td><td>100000</td><td>544,943,353.8 ns</td><td>7,107,937.90 ns</td><td>5,935,450.07 ns</td><td>545,416,700.0 ns</td><td>42000.0000</td><td>14000.0000</td><td>-</td><td>266,323,600 B</td>
+</tr><tr><td>Mapperly_List</td><td>1000000</td><td>6,966,409,850.0 ns</td><td>44,375,994.16 ns</td><td>34,645,857.31 ns</td><td>6,974,500,050.0 ns</td><td>438000.0000</td><td>146000.0000</td><td>-</td><td>2,758,419,480 B</td>
+</tr><tr><td>AutoMapper_List</td><td>1</td><td>8,839.0 ns</td><td>139.27 ns</td><td>123.46 ns</td><td>8,818.2 ns</td><td>1.5259</td><td>0.0153</td><td>-</td><td>7,209 B</td>
+</tr><tr><td>AutoMapper_List</td><td>10</td><td>61,884.9 ns</td><td>494.36 ns</td><td>438.24 ns</td><td>61,856.0 ns</td><td>10.7422</td><td>0.8545</td><td>-</td><td>50,626 B</td>
+</tr><tr><td>AutoMapper_List</td><td>100</td><td>625,934.8 ns</td><td>4,409.37 ns</td><td>3,682.03 ns</td><td>626,180.2 ns</td><td>100.5859</td><td>33.2031</td><td>-</td><td>478,688 B</td>
+</tr><tr><td>AutoMapper_List</td><td>1000</td><td>9,150,545.1 ns</td><td>149,078.54 ns</td><td>116,390.72 ns</td><td>9,181,585.9 ns</td><td>781.2500</td><td>359.3750</td><td>-</td><td>4,665,972 B</td>
+</tr><tr><td>AutoMapper_List</td><td>10000</td><td>176,346,305.3 ns</td><td>3,522,798.36 ns</td><td>6,870,947.65 ns</td><td>176,064,850.0 ns</td><td>7500.0000</td><td>2750.0000</td><td>250.0000</td><td>46,920,226 B</td>
+</tr><tr><td>AutoMapper_List</td><td>100000</td><td>1,856,540,421.4 ns</td><td>20,091,495.72 ns</td><td>17,810,587.64 ns</td><td>1,854,096,850.0 ns</td><td>74000.0000</td><td>25000.0000</td><td>-</td><td>472,057,592 B</td>
+</tr><tr><td>AutoMapper_List</td><td>1000000</td><td>65,851,378,301.0 ns</td><td>3,441,176,237.42 ns</td><td>10,146,385,776.95 ns</td><td>68,166,872,750.0 ns</td><td>750000.0000</td><td>263000.0000</td><td>10000.0000</td><td>4,664,014,640 B</td>
+</tr><tr><td>ManualMapper_List</td><td>1</td><td>737.9 ns</td><td>14.45 ns</td><td>13.52 ns</td><td>730.7 ns</td><td>0.5245</td><td>0.0038</td><td>-</td><td>2,472 B</td>
+</tr><tr><td>ManualMapper_List</td><td>10</td><td>8,318.5 ns</td><td>66.73 ns</td><td>62.42 ns</td><td>8,301.3 ns</td><td>5.9814</td><td>0.4730</td><td>-</td><td>28,208 B</td>
+</tr><tr><td>ManualMapper_List</td><td>100</td><td>88,989.3 ns</td><td>828.27 ns</td><td>691.64 ns</td><td>88,989.1 ns</td><td>55.2979</td><td>17.3340</td><td>-</td><td>262,208 B</td>
+</tr><tr><td>ManualMapper_List</td><td>1000</td><td>2,152,190.5 ns</td><td>29,313.57 ns</td><td>27,419.94 ns</td><td>2,144,812.9 ns</td><td>472.6563</td><td>234.3750</td><td>-</td><td>2,762,532 B</td>
+</tr><tr><td>ManualMapper_List</td><td>10000</td><td>64,753,160.7 ns</td><td>729,602.93 ns</td><td>682,471.03 ns</td><td>64,753,588.9 ns</td><td>4555.5556</td><td>1888.8889</td><td>333.3333</td><td>26,846,758 B</td>
+</tr><tr><td>ManualMapper_List</td><td>100000</td><td>538,160,507.7 ns</td><td>4,967,079.60 ns</td><td>4,147,736.42 ns</td><td>539,256,600.0 ns</td><td>43000.0000</td><td>14000.0000</td><td>-</td><td>269,724,840 B</td>
+</tr><tr><td>ManualMapper_List</td><td>1000000</td><td>10,557,290,105.0 ns</td><td>1,097,256,506.88 ns</td><td>3,235,285,567.19 ns</td><td>10,105,812,950.0 ns</td><td>420000.0000</td><td>148000.0000</td><td>-</td><td>2,647,251,680 B</td>
+</tr></tbody></table>
+</body>
+</html>

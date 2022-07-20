@@ -7,11 +7,8 @@
 
   <ItemGroup>
     <Compile Remove="UseCases\Case01\UseCases\**" />
-    <Compile Remove="UseCases\Case03\**" />
     <EmbeddedResource Remove="UseCases\Case01\UseCases\**" />
-    <EmbeddedResource Remove="UseCases\Case03\**" />
     <None Remove="UseCases\Case01\UseCases\**" />
-    <None Remove="UseCases\Case03\**" />
   </ItemGroup>
 
   <ItemGroup>

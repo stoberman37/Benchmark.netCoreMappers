@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ObjectsMapperBenchmark{
+namespace ObjectsMapperBenchmark.Case3
+{
     public class User
     {
         public User(int id, DateTime birthDate, string name, double score, Address address, List<Contact> contacts)
@@ -30,30 +31,5 @@ namespace ObjectsMapperBenchmark{
         public Address Address { get; set; }
 
         public IList<Contact> Contacts { get; set; }
-
-        public static User Create(UserModel userModel) => new User
-        {
-            Id = userModel.Id,
-            Name = userModel.Name,
-            Score = userModel.Points,
-            BirthDate = userModel.BornAt,
-            Address = Address.Create(userModel.Location),
-            Contacts = userModel.ContactList.Select(s => Contact.Create(s)).ToList()
-        };
-
-        public static List<User> CreateWithLambda(List<UserModel> users) =>
-            GenerateList.WithLambda(users, (user) => Create(user));
-
-        public static List<User> CreateWithFor(List<UserModel> users) =>
-            GenerateList.WithFor(users, (user) => Create(user));
-
-        public static List<User> CreateWithForeach(List<UserModel> users) =>
-            GenerateList.WithForeach(users, (user) => Create(user));
-
-        public static List<User> CreateWithParallelFor(List<UserModel> users) =>
-            GenerateList.WithParallelFor(users, (user) => Create(user));
-
-        public static List<User> CreateWithParallelForeach(List<UserModel> users) =>
-            GenerateList.WithParallelForeach(users, (user) => Create(user));
     }
 }
