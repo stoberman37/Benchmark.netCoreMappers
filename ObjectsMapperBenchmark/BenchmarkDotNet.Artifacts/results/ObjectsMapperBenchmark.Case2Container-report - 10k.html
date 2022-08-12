@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8' />
+<title>ObjectsMapperBenchmark.Case2Container-20220725-124859</title>
+
+<style type="text/css">
+	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
+	td, th { padding: 6px 13px; border: 1px solid #ddd; text-align: right; }
+	tr { background-color: #fff; border-top: 1px solid #ccc; }
+	tr:nth-child(even) { background: #f8f8f8; }
+</style>
+</head>
+<body>
+<pre><code>
+BenchmarkDotNet=v0.13.1, OS=Windows 10.0.22000
+Intel Core i7-8850H CPU 2.60GHz (Coffee Lake), 1 CPU, 12 logical and 6 physical cores
+.NET SDK=6.0.107
+  [Host]     : .NET 6.0.7 (6.0.722.32202), X64 RyuJIT
+  Job-AJIMWZ : .NET 6.0.7 (6.0.722.32202), X64 RyuJIT
+</code></pre>
+<pre><code>RunStrategy=Throughput  
+</code></pre>
+
+<table>
+<thead><tr><th>       Method</th><th>Count</th><th>Mean</th><th>Error</th><th>StdDev</th><th>Median</th><th>Gen 0</th><th>Gen 1</th><th>Gen 2</th><th>Allocated</th>
+</tr>
+</thead><tbody><tr><td>Mapperly_Array</td><td>10000</td><td>48.04 ms</td><td>0.674 ms</td><td>0.526 ms</td><td>48.10 ms</td><td>3727.2727</td><td>1454.5455</td><td>181.8182</td><td>22 MB</td>
+</tr><tr><td>AutoMapper_Array</td><td>10000</td><td>71.67 ms</td><td>1.378 ms</td><td>3.580 ms</td><td>70.88 ms</td><td>5000.0000</td><td>1857.1429</td><td>285.7143</td><td>29 MB</td>
+</tr><tr><td>ManualMapper_Array</td><td>10000</td><td>53.08 ms</td><td>1.089 ms</td><td>3.212 ms</td><td>52.79 ms</td><td>3909.0909</td><td>1545.4545</td><td>272.7273</td><td>22 MB</td>
+</tr><tr><td>Mapperly_List</td><td>10000</td><td>51.83 ms</td><td>0.987 ms</td><td>1.137 ms</td><td>52.15 ms</td><td>3888.8889</td><td>1555.5556</td><td>222.2222</td><td>22 MB</td>
+</tr><tr><td>AutoMapper_List</td><td>10000</td><td>73.61 ms</td><td>1.324 ms</td><td>1.359 ms</td><td>73.68 ms</td><td>5142.8571</td><td>2142.8571</td><td>285.7143</td><td>29 MB</td>
+</tr><tr><td>ManualMapper_List</td><td>10000</td><td>65.49 ms</td><td>4.702 ms</td><td>13.862 ms</td><td>63.13 ms</td><td>3818.1818</td><td>1454.5455</td><td>181.8182</td><td>22 MB</td>
+</tr><tr><td>TinyMapper_Array</td><td>10000</td><td>142.80 ms</td><td>2.751 ms</td><td>3.378 ms</td><td>143.37 ms</td><td>8750.0000</td><td>2250.0000</td><td>-</td><td>53 MB</td>
+</tr><tr><td>TinyMapper_List</td><td>10000</td><td>141.38 ms</td><td>2.826 ms</td><td>2.505 ms</td><td>141.22 ms</td><td>8750.0000</td><td>2250.0000</td><td>-</td><td>53 MB</td>
+</tr><tr><td>ExpressMapper_Array</td><td>10000</td><td>84.56 ms</td><td>1.678 ms</td><td>3.753 ms</td><td>84.89 ms</td><td>5285.7143</td><td>2142.8571</td><td>285.7143</td><td>30 MB</td>
+</tr><tr><td>ExpressMapper_List</td><td>10000</td><td>84.53 ms</td><td>1.734 ms</td><td>5.030 ms</td><td>84.22 ms</td><td>5166.6667</td><td>2166.6667</td><td>333.3333</td><td>30 MB</td>
+</tr><tr><td>AgileMapper_Array</td><td>10000</td><td>98.74 ms</td><td>2.536 ms</td><td>7.398 ms</td><td>100.90 ms</td><td>9000.0000</td><td>3000.0000</td><td>-</td><td>56 MB</td>
+</tr><tr><td>AgileMapper_List</td><td>10000</td><td>121.84 ms</td><td>2.163 ms</td><td>4.749 ms</td><td>120.83 ms</td><td>9750.0000</td><td>3500.0000</td><td>500.0000</td><td>56 MB</td>
+</tr><tr><td>Mapster_Array</td><td>10000</td><td>49.65 ms</td><td>0.782 ms</td><td>1.044 ms</td><td>49.64 ms</td><td>3800.0000</td><td>1400.0000</td><td>100.0000</td><td>23 MB</td>
+</tr><tr><td>Mapster_List</td><td>10000</td><td>63.44 ms</td><td>1.256 ms</td><td>1.396 ms</td><td>63.02 ms</td><td>4000.0000</td><td>1750.0000</td><td>250.0000</td><td>23 MB</td>
+</tr></tbody></table>
+</body>
+</html>

@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
@@ -6,6 +7,7 @@ using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Engines;
 using BenchmarkDotNet.Order;
+using Nelibur.ObjectMapper;
 using ObjectsMapperBenchmark.Case3;
 
 namespace ObjectsMapperBenchmark
@@ -20,8 +22,8 @@ namespace ObjectsMapperBenchmark
 		private readonly Case3UserModelMapper _mapperlyMapper;
 		private readonly IMapper _autoMapper;
 
-		[Params(1, 10, 100, 1000, 10000, 100000, 1000000)]
-		//[Params(1, 100, 1000)]
+		//[Params(1, 10, 100, 1000, 10000, 100000, 1000000)]
+		[Params(1)]
 		public int Count { get; set; }
 
 		private List<Case3.UserModel> _models;
@@ -57,15 +59,35 @@ namespace ObjectsMapperBenchmark
 			});
 			_autoMapper = mapperConfig.CreateMapper();
 
+			// TinyMapper
+			Nelibur.ObjectMapper.TinyMapper.Bind<ContactModel, Contact>(c =>
+			{
+				c.Bind(s => s.ContactType, d => d.ContactType);
+				c.Bind(s => s.Contact, d => d.Description);
+			});
+			Nelibur.ObjectMapper.TinyMapper.Bind<AddressModel, Address>(c =>
+			{
+				c.Bind(s => s.Identifier, d => d.ZipCode);
+				c.Bind(s => s.Address.Split(',', StringSplitOptions.None).First(), d => d.Street);
+				//c.Bind(s => s.Address.Split(',', StringSplitOptions.None)[1], d => d.City);
+			});
+			Nelibur.ObjectMapper.TinyMapper.Bind<UserModel, User>(c =>
+			{
+				//c.Bind(s => s.Id, d => d.Id);
+				//c.Bind(s => s.Name, d => d.Name);
+				//c.Bind(s => s.Points, d => d.Score);
+				//c.Bind(s => s.BornAt, d => d.BirthDate);
+				//c.Bind(s => s.Location, d => d.Address);
+				//c.Bind(s => s.ContactList, d => d.Contacts);
+			});
 		}
 
 		[Benchmark]
 		[BenchmarkCategory("Case3a")]
-		public void Mapperly_Single()
+		public void TinyMapper_Test()
 		{
-			var r2 = _mapperlyMapper.Map(_models[0]);
-			var result = _autoMapper.Map<Case3.UserModel, User>(_models[0]);
-			var r = r2 == result;
+			var c = ContactModel.GenerateMockList(1)[0];
+			var result = TinyMapper.Map<Case3.ContactModel, Case3.Contact>(c);
 		}
 
 		[Benchmark]
@@ -108,6 +130,20 @@ namespace ObjectsMapperBenchmark
 		public void ManualMapper_List()
 		{
 			var result = _models.Select(m => m.Map()).ToList();
+		}
+
+		[Benchmark]
+		[BenchmarkCategory("Case3")]
+		public void TinyMapper_Array()
+		{
+			var result = TinyMapper.Map<IEnumerable<Case3.UserModel>, Case3.User[]>(_models);
+		}
+
+		[Benchmark]
+		[BenchmarkCategory("Case3")]
+		public void TinyMapper_List()
+		{
+			var result = TinyMapper.Map<IEnumerable<Case3.UserModel>, List<Case3.User>>(_models);
 		}
 	}
 }

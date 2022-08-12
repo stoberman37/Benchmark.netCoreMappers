@@ -6,6 +6,7 @@ using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Engines;
 using BenchmarkDotNet.Order;
+using Mapster;
 using ObjectsMapperBenchmark.Case2;
 
 namespace ObjectsMapperBenchmark
@@ -20,8 +21,8 @@ namespace ObjectsMapperBenchmark
 		private readonly Case2UserModelMapper _mapperlyMapper;
 		private readonly IMapper _autoMapper;
 
-		[Params(1, 10, 100, 1000, 10000, 100000, 1000000)]
-		//[Params(1, 100, 1000)]
+		//[Params(1, 10, 100, 1000, 10000, 100000, 1000000)]
+		[Params(100000)]
 		public int Count { get; set; }
 
 		private List<Case2.UserModel> _models;
@@ -44,15 +45,17 @@ namespace ObjectsMapperBenchmark
 			});
 			_autoMapper = mapperConfig.CreateMapper();
 
-		}
+			Nelibur.ObjectMapper.TinyMapper.Bind<ContactModel, Contact>();
+			Nelibur.ObjectMapper.TinyMapper.Bind<AddressModel, Address>();
+			Nelibur.ObjectMapper.TinyMapper.Bind<UserModel, User>();
 
-		//[Benchmark]
-		//[BenchmarkCategory("Case2a")]
-		//public void AutoMapper_Single()
-		//{
-		//	var result = _autoMapper.Map<Case2.ContactModel, ContactType>(_models[0].Contacts[0]);
-		//	var r2 = _autoMapper.Map<Case2.AddressModel, Case2.Address>(AddressModel.GenerateMock());
-		//}
+			global::ExpressMapper.Mapper.Register<ContactModel, Contact>();
+			global::ExpressMapper.Mapper.Register<AddressModel, Address>();
+			global::ExpressMapper.Mapper.Register<UserModel, User>();
+
+			//Mapster don't need configuration
+			//AgileMapper don't need configuration
+		}
 
 		[Benchmark]
 		[BenchmarkCategory("Case2")]
@@ -94,6 +97,62 @@ namespace ObjectsMapperBenchmark
 		public void ManualMapper_List()
 		{
 			var result = _models.Select(m => m.Map()).ToList();
+		}
+
+		[Benchmark]
+		[BenchmarkCategory("Case2")]
+		public void TinyMapper_Array()
+		{
+			var result = _models.Select(m => Nelibur.ObjectMapper.TinyMapper.Map<Case2.UserModel, Case2.User>(m)).ToArray();
+		}
+
+		[Benchmark]
+		[BenchmarkCategory("Case2")]
+		public void TinyMapper_List()
+		{
+			var result = _models.Select(m => Nelibur.ObjectMapper.TinyMapper.Map<Case2.UserModel, Case2.User>(m)).ToList();
+		}
+
+		[Benchmark]
+		[BenchmarkCategory("Case2")]
+		public void ExpressMapper_Array()
+		{
+			var result = ExpressMapper.Mapper.Map<IEnumerable<Case2.UserModel>, Case2.User[]>(_models);
+		}
+
+		[Benchmark]
+		[BenchmarkCategory("Case2")]
+		public void ExpressMapper_List()
+		{
+			var result = ExpressMapper.Mapper.Map<IEnumerable<Case2.UserModel>, List<Case2.User>>(_models);
+		}
+
+		[Benchmark]
+		[BenchmarkCategory("Case2")]
+		public void AgileMapper_Array()
+		{
+			var result = AgileObjects.AgileMapper.Mapper.Map(_models).ToANew<Case2.User[]>();
+		}
+
+		[Benchmark]
+		[BenchmarkCategory("Case2")]
+		public void AgileMapper_List()
+		{
+			var result = AgileObjects.AgileMapper.Mapper.Map(_models).ToANew<List<Case2.User>>();
+		}
+
+		[Benchmark]
+		[BenchmarkCategory("Case2")]
+		public void Mapster_Array()
+		{
+			var a = _models.AsQueryable().ProjectToType<Case2.User>().ToArray();
+		}
+
+		[Benchmark]
+		[BenchmarkCategory("Case2")]
+		public void Mapster_List()
+		{
+			var l = _models.AsQueryable().ProjectToType<Case2.User>().ToList();
 		}
 	}
 }
