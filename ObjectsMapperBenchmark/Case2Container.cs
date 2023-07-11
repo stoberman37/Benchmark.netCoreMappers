@@ -21,8 +21,8 @@ namespace ObjectsMapperBenchmark
 		private readonly Case2UserModelMapper _mapperlyMapper;
 		private readonly IMapper _autoMapper;
 
-		//[Params(1, 10, 100, 1000, 10000, 100000, 1000000)]
-		[Params(100000)]
+		[Params(1, 10, 100, 1000, 10000, 100000, 1000000)]
+		//[Params(10)]
 		public int Count { get; set; }
 
 		private List<Case2.UserModel> _models;
